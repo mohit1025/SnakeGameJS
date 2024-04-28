@@ -46,6 +46,7 @@ function gameEngine() {
         musicSound.play();
         SnakeArr = [{ x: 13, y: 15 }];
         score=0;
+        speed=3;
     }
 
     if (SnakeArr[0].x === food.x && SnakeArr[0].y === food.y) {
