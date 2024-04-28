@@ -2,11 +2,12 @@ let inputDir = { x: 0, y: 0 };
 let foodSound = new Audio('../Music/8-bit-game-music-122259.mp3');
 let gameOverSound = new Audio('../Music/commercial-rock-beats-spin-11249.mp3');
 let musicSound = new Audio('../Music/hip-hop-rock-beats-118000.mp3');
-let speed = 5;
+let speed = 3;
 let score = 0;
 let lastPaintTime = 0;
 let SnakeArr = [{ x: 13, y: 15 }];
 let food = { x: 6, y: 7 };
+
 
 function main(ctime) {
     window.requestAnimationFrame(main);
@@ -32,7 +33,7 @@ function isCollide(snake) {
 }
 
 function generateFood() {
-    food = { x: Math.floor(Math.random() * 18) + 1, y: Math.floor(Math.random() * 18) + 1 };
+    food = { x: Math.floor(Math.random() * 17) + 1, y: Math.floor(Math.random() * 17) + 1 };
 }
 
 function gameEngine() {
@@ -41,10 +42,10 @@ function gameEngine() {
         gameOverSound.play();
         inputDir = { x: 0, y: 0 };
         alert("Game Over!! Press any key to play again");
-        SnakeArr = [{ x: 13, y: 15 }];
         gameOverSound.pause();
         musicSound.play();
-        score = 0;
+        SnakeArr = [{ x: 13, y: 15 }];
+        score=0;
     }
 
     if (SnakeArr[0].x === food.x && SnakeArr[0].y === food.y) {
@@ -52,6 +53,12 @@ function gameEngine() {
         generateFood();
         foodSound.play();
         score++;
+        if(score> highScoreValue){
+            highScoreValue=score;
+            localStorage.setItem("highScore",JSON.stringify(highScoreValue))
+            document.getElementById("highScore").innerHTML= "High Score: " + highScoreValue;
+        }
+        document.getElementById('score').innerHTML = "Your Score" + score;
         speed+=0.25
     }
 
@@ -81,6 +88,16 @@ function gameEngine() {
     document.getElementById('board').appendChild(foodElement);
 
     document.getElementById('score').innerText = "Score: " + score;
+}
+// Main Code running 
+let highScore = localStorage.getItem("highScore")
+if(highScore==null){
+    highScoreValue=0;
+    localStorage.setItem("highScore",JSON.stringify(highScoreValue))
+}
+else{
+    highScoreValue=JSON.parse(highScore);
+    document.getElementById("highScore").innerHTML= "High Score: " + highScoreValue;
 }
 
 window.requestAnimationFrame(main);
